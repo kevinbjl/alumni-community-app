@@ -8,6 +8,7 @@ function App() {
 
   return (
     <>
+      <button className="btn btn-info">DaisyUI Test</button>
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
