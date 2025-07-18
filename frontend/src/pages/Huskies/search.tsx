@@ -1,87 +1,262 @@
-import React from "react";
+import {
+  IoNotificationsOutline,
+  IoMailOutline,
+  IoPersonCircleSharp,
+  IoSearchOutline,
+  IoLogInOutline,
+} from "react-icons/io5";
+import { IoIosArrowBack } from "react-icons/io";
+import { BsSliders } from "react-icons/bs";
 
+const tabs = [
+  { name: "Recruiting", active: false },
+  { name: "Huskies", active: true },
+  { name: "Activities", active: false },
+];
+
+// TODO: Profiles are mocked for now, will be replaced with actual profiles
 const mockProfiles = [
   {
-    name: "Jane Doe",
-    gradYear: "Class of 2015",
-    job: "Software Engineer at Google",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
-    story:
-      "From UConn to Silicon Valley, Jane's journey is a testament to perseverance and passion for technology.",
-  },
-  {
-    name: "John Smith",
-    gradYear: "Class of 2012",
-    job: "Product Manager at Meta",
+    name: "David Lane",
+    title: "UI/UX Designer",
+    location: "London, England",
     image: "https://randomuser.me/api/portraits/men/32.jpg",
-    story:
-      "John leveraged his UConn network to break into tech and now leads teams building impactful products.",
+    tags: ["Mentor", "Google", "Technology Field"],
+    status: "",
+    emphasis: true,
   },
   {
-    name: "Emily Chen",
-    gradYear: "Class of 2018",
-    job: "UX Designer at Spotify",
+    name: "Kathryn Murphy",
+    title: "Software Developer",
+    location: "London, England",
+    image: "https://randomuser.me/api/portraits/women/44.jpg",
+    tags: ["Mentor", "Google", "Technology Field"],
+    status: "",
+    emphasis: false,
+  },
+  {
+    name: "Elena Pena",
+    title: "UI/UX Designer",
+    location: "London, England",
     image: "https://randomuser.me/api/portraits/women/68.jpg",
-    story:
-      "Emily's creative journey started at UConn and took her to designing experiences for millions of users.",
+    tags: ["Mentee", "Amazon", "Technology Field"],
+    status: "",
+    emphasis: false,
+  },
+  {
+    name: "Floyd Miles",
+    title: "UI/UX Designer",
+    location: "London, England",
+    image: "https://randomuser.me/api/portraits/men/33.jpg",
+    tags: ["Mentee", "Facebook", "Technology Field"],
+    status: "",
+    emphasis: false,
+  },
+  {
+    name: "John Cooper",
+    title: "UI/UX Designer",
+    location: "London, England",
+    image: "https://randomuser.me/api/portraits/men/34.jpg",
+    tags: ["Looking For Mentor", "TD Bank", "Finance Field"],
+    status: "Looking For Mentor",
+    emphasis: false,
+  },
+  {
+    name: "Jacob Jones",
+    title: "Full-Stack Developer",
+    location: "London, England",
+    image: "https://randomuser.me/api/portraits/men/35.jpg",
+    tags: ["Open To Mentees", "Microsoft", "Technology Field"],
+    status: "Open To Mentees",
+    emphasis: false,
+  },
+  {
+    name: "Ronald Richards",
+    title: "QA Engineer",
+    location: "London, England",
+    image: "https://randomuser.me/api/portraits/men/36.jpg",
+    tags: ["Looking For Mentor", "Amazon", "Technology Field"],
+    status: "Looking For Mentor",
+    emphasis: false,
+  },
+  {
+    name: "Kristina Watson",
+    title: "UI/UX Designer",
+    location: "London, England",
+    image: "https://randomuser.me/api/portraits/women/69.jpg",
+    tags: ["Mentee", "Amazon", "Technology Field"],
+    status: "",
+    emphasis: false,
+  },
+  {
+    name: "Sara Wilson",
+    title: "UI/UX Designer",
+    location: "London, England",
+    image: "https://randomuser.me/api/portraits/women/70.jpg",
+    tags: ["Mentor", "Oracle", "Technology Field"],
+    status: "",
+    emphasis: false,
+  },
+  {
+    name: "Jenny Fox",
+    title: "UI/UX Designer",
+    location: "London, England",
+    image: "https://randomuser.me/api/portraits/women/71.jpg",
+    tags: ["Looking For Mentor", "BC Hospital", "Healthcare Field"],
+    status: "Looking For Mentor",
+    emphasis: false,
+  },
+  {
+    name: "Cody Fisher",
+    title: "UI/UX Designer",
+    location: "London, England",
+    image: "https://randomuser.me/api/portraits/men/37.jpg",
+    tags: ["Open To Mentees", "Oracle", "Technology Field"],
+    status: "Open To Mentees",
+    emphasis: false,
+  },
+  {
+    name: "Giulia Edwards",
+    title: "UI/UX Designer",
+    location: "London, England",
+    image: "https://randomuser.me/api/portraits/women/72.jpg",
+    tags: ["Mentee", "Oracle University", "Technology Field"],
+    status: "",
+    emphasis: false,
   },
 ];
 
 export default function SearchPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">
-          Search Alumni Stories
-        </h1>
-        <div className="mb-8 flex flex-col sm:flex-row gap-4 items-center justify-center">
-          <input
-            type="text"
-            placeholder="Search by name, company, or year..."
-            className="w-full sm:w-80 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            disabled
-          />
-          <button
-            className="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold shadow hover:bg-blue-700 transition disabled:opacity-50"
-            disabled
-          >
-            Search
+    <div className="min-h-screen bg-white flex flex-col">
+      {/* Navigation bar */}
+      <nav className="w-full flex items-center justify-between px-8 py-4 border-b border-gray-200">
+        <div className="flex items-center gap-6">
+          <p className="text-2xl font-bold text-emphasis">N</p>
+        </div>
+        <div className="flex items-center gap-6">
+          {/* TODO: Those icons should take the user to the corresponding page or pop the modal/dropdown */}
+          <button>
+            <IoNotificationsOutline className="size-6" />
+          </button>
+          <button>
+            <IoMailOutline className="size-6" />
+          </button>
+          <button>
+            <IoPersonCircleSharp className="text-emphasis size-6" />
           </button>
         </div>
-        <div className="grid gap-6 md:grid-cols-2">
+      </nav>
+      {/* Tab bar */}
+      <div className="w-full flex justify-center border-b border-gray-200 bg-white">
+        <div className="flex gap-12 mt-2 mb-2">
+          {/* TODO: Set up navigation for those tabs */}
+          {tabs.map((tab) => (
+            <span
+              key={tab.name}
+              className={`text-lg font-extra-light cursor-pointer pb-2 ${
+                tab.active ? "text-emphasis" : "text-gray-500"
+              }`}
+            >
+              {tab.name}
+            </span>
+          ))}
+        </div>
+      </div>
+      {/* Main content */}
+      <div className="max-w-7xl w-full mx-auto flex-1 px-4 md:px-8 py-8">
+        {/* TODO: The back button should return to the previous page */}
+        <button className="flex items-center gap-2 text-gray-700 mb-6">
+          <IoIosArrowBack />
+          <span className="text-medium">Huskies</span>
+        </button>
+        {/* Search bar and map mode */}
+        <div className="flex flex-col md:flex-row md:items-center gap-4 mb-8">
+          <div className="flex-1 flex items-center bg-gray-100 rounded-full px-4 py-2 border border-gray-200">
+            <IoSearchOutline className="mr-2" />
+            {/* TODO: Should do a search upon hitting enter */}
+            <input
+              type="text"
+              placeholder="Search by Huskies Skills, Titles, Industries"
+              className="bg-transparent outline-none flex-1 text-gray-700 placeholder-gray-400"
+            />
+            {/* TODO: Should be able to filter alumni based on criteria */}
+            <button>
+              <BsSliders />
+            </button>
+          </div>
+          {/* TODO: How this map mode will be implemented needs further discussion */}
+          <button className="bg-emphasis text-white font-semibold rounded-full px-8 py-2 shadow hover:bg-red-800 transition w-full md:w-auto">
+            Map Mode
+          </button>
+        </div>
+        {/* Profile Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {mockProfiles.map((profile, idx) => (
             <div
               key={idx}
-              className="bg-white rounded-xl shadow p-6 flex flex-col sm:flex-row items-center gap-6"
+              className={`border rounded-xl bg-white p-5 flex flex-col gap-3 shadow-sm ${
+                profile.emphasis ? `border-emphasis` : "border-gray-200"
+              }`}
             >
-              <img
-                src={profile.image}
-                alt={profile.name}
-                className="w-24 h-24 rounded-full object-cover border-4 border-blue-100 shadow-md"
-              />
-              <div className="flex-1">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                  <h2 className="text-xl font-semibold text-gray-800">
+              <div className="flex items-center gap-3">
+                <img
+                  src={profile.image}
+                  alt={profile.name}
+                  className="w-14 h-14 rounded-full object-cover border border-gray-200"
+                />
+                <div>
+                  <div className="font-semibold text-gray-900">
                     {profile.name}
-                  </h2>
-                  <span className="text-sm text-blue-600 font-medium bg-blue-50 px-3 py-1 rounded-full">
-                    {profile.gradYear}
-                  </span>
-                </div>
-                <div className="text-gray-500 text-sm mt-1 mb-2">
-                  {profile.job}
-                </div>
-                <p className="text-gray-700 mb-4">{profile.story}</p>
-                <div className="flex gap-2">
-                  <button className="px-4 py-2 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition">
-                    View Story
-                  </button>
-                  <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition">
-                    Connect
-                  </button>
+                  </div>
+                  <div className="text-sm text-gray-500">{profile.title}</div>
+                  <div className="text-xs text-gray-400">
+                    {profile.location}
+                  </div>
                 </div>
               </div>
+              {/* Status or View Button */}
+              {profile.status ? (
+                <span
+                  className={`inline-block text-xs font-semibold rounded-full px-3 py-1 ${
+                    profile.status.includes("Open")
+                      ? `bg-emphasis text-white`
+                      : `bg-blue-100 text-blue-700`
+                  }`}
+                >
+                  {profile.status}
+                </span>
+              ) : profile.emphasis ? (
+                <button className="flex items-center gap-1 border border-emphasis text-emphasis rounded-full px-4 py-1 text-sm font-semibold mt-2">
+                  <IoLogInOutline />
+                  View
+                </button>
+              ) : null}
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2 mt-2">
+                {profile.tags.map((tag, i) => (
+                  <span
+                    key={i}
+                    className="bg-gray-100 text-gray-600 text-xs rounded-full px-3 py-1 border border-gray-200"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
+          ))}
+        </div>
+        {/* Pagination */}
+        <div className="flex justify-center mt-8 gap-2">
+          {[1, 2, 3, 4, 5, 6].map((n) => (
+            <span
+              key={n}
+              className={`w-6 h-6 flex items-center justify-center rounded text-sm font-semibold cursor-pointer ${
+                n === 1 ? "text-emphasis" : "text-gray-400"
+              }`}
+            >
+              {n}
+            </span>
           ))}
         </div>
       </div>
