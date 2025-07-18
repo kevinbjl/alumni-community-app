@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   IoNotificationsOutline,
   IoMailOutline,
@@ -22,8 +23,6 @@ const mockProfiles = [
     location: "London, England",
     image: "https://randomuser.me/api/portraits/men/32.jpg",
     tags: ["Mentor", "Google", "Technology Field"],
-    status: "",
-    emphasis: true,
   },
   {
     name: "Kathryn Murphy",
@@ -31,8 +30,6 @@ const mockProfiles = [
     location: "London, England",
     image: "https://randomuser.me/api/portraits/women/44.jpg",
     tags: ["Mentor", "Google", "Technology Field"],
-    status: "",
-    emphasis: false,
   },
   {
     name: "Elena Pena",
@@ -40,8 +37,6 @@ const mockProfiles = [
     location: "London, England",
     image: "https://randomuser.me/api/portraits/women/68.jpg",
     tags: ["Mentee", "Amazon", "Technology Field"],
-    status: "",
-    emphasis: false,
   },
   {
     name: "Floyd Miles",
@@ -49,8 +44,6 @@ const mockProfiles = [
     location: "London, England",
     image: "https://randomuser.me/api/portraits/men/33.jpg",
     tags: ["Mentee", "Facebook", "Technology Field"],
-    status: "",
-    emphasis: false,
   },
   {
     name: "John Cooper",
@@ -58,8 +51,6 @@ const mockProfiles = [
     location: "London, England",
     image: "https://randomuser.me/api/portraits/men/34.jpg",
     tags: ["Looking For Mentor", "TD Bank", "Finance Field"],
-    status: "Looking For Mentor",
-    emphasis: false,
   },
   {
     name: "Jacob Jones",
@@ -67,8 +58,6 @@ const mockProfiles = [
     location: "London, England",
     image: "https://randomuser.me/api/portraits/men/35.jpg",
     tags: ["Open To Mentees", "Microsoft", "Technology Field"],
-    status: "Open To Mentees",
-    emphasis: false,
   },
   {
     name: "Ronald Richards",
@@ -76,8 +65,6 @@ const mockProfiles = [
     location: "London, England",
     image: "https://randomuser.me/api/portraits/men/36.jpg",
     tags: ["Looking For Mentor", "Amazon", "Technology Field"],
-    status: "Looking For Mentor",
-    emphasis: false,
   },
   {
     name: "Kristina Watson",
@@ -85,8 +72,6 @@ const mockProfiles = [
     location: "London, England",
     image: "https://randomuser.me/api/portraits/women/69.jpg",
     tags: ["Mentee", "Amazon", "Technology Field"],
-    status: "",
-    emphasis: false,
   },
   {
     name: "Sara Wilson",
@@ -94,8 +79,6 @@ const mockProfiles = [
     location: "London, England",
     image: "https://randomuser.me/api/portraits/women/70.jpg",
     tags: ["Mentor", "Oracle", "Technology Field"],
-    status: "",
-    emphasis: false,
   },
   {
     name: "Jenny Fox",
@@ -103,8 +86,6 @@ const mockProfiles = [
     location: "London, England",
     image: "https://randomuser.me/api/portraits/women/71.jpg",
     tags: ["Looking For Mentor", "BC Hospital", "Healthcare Field"],
-    status: "Looking For Mentor",
-    emphasis: false,
   },
   {
     name: "Cody Fisher",
@@ -112,8 +93,6 @@ const mockProfiles = [
     location: "London, England",
     image: "https://randomuser.me/api/portraits/men/37.jpg",
     tags: ["Open To Mentees", "Oracle", "Technology Field"],
-    status: "Open To Mentees",
-    emphasis: false,
   },
   {
     name: "Giulia Edwards",
@@ -121,20 +100,21 @@ const mockProfiles = [
     location: "London, England",
     image: "https://randomuser.me/api/portraits/women/72.jpg",
     tags: ["Mentee", "Oracle University", "Technology Field"],
-    status: "",
-    emphasis: false,
   },
 ];
 
+// TODO: Use responsive design
 export default function SearchPage() {
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Navigation bar */}
       <nav className="w-full flex items-center justify-between px-8 py-4 border-b border-gray-200">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 ml-[8%]">
           <p className="text-2xl font-bold text-emphasis">N</p>
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 mr-[8%]">
           {/* TODO: Those icons should take the user to the corresponding page or pop the modal/dropdown */}
           <button>
             <IoNotificationsOutline className="size-6" />
@@ -154,7 +134,7 @@ export default function SearchPage() {
           {tabs.map((tab) => (
             <span
               key={tab.name}
-              className={`text-lg font-extra-light cursor-pointer pb-2 ${
+              className={`text-lg font-lightmedium cursor-pointer ${
                 tab.active ? "text-emphasis" : "text-gray-500"
               }`}
             >
@@ -190,61 +170,59 @@ export default function SearchPage() {
             Map Mode
           </button>
         </div>
-        {/* Profile Grid */}
+        {/* Profile grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {mockProfiles.map((profile, idx) => (
-            <div
-              key={idx}
-              className={`border rounded-xl bg-white p-5 flex flex-col gap-3 shadow-sm ${
-                profile.emphasis ? `border-emphasis` : "border-gray-200"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <img
-                  src={profile.image}
-                  alt={profile.name}
-                  className="w-14 h-14 rounded-full object-cover border border-gray-200"
-                />
-                <div>
-                  <div className="font-semibold text-gray-900">
-                    {profile.name}
-                  </div>
-                  <div className="text-sm text-gray-500">{profile.title}</div>
-                  <div className="text-xs text-gray-400">
-                    {profile.location}
+          {mockProfiles.map((profile, idx) => {
+            const isHovered = hoveredIdx === idx;
+
+            return (
+              <div
+                key={idx}
+                className="border rounded-sm bg-white p-5 flex flex-col gap-3 relative border-gray-300 hover:border-black"
+                onMouseEnter={() => setHoveredIdx(idx)}
+                onMouseLeave={() => setHoveredIdx(null)}
+              >
+                <div className="flex items-center gap-3">
+                  <img
+                    src={profile.image}
+                    alt={profile.name}
+                    className="w-14 h-14 rounded-full object-cover border border-black"
+                  />
+                  <div>
+                    <div className="font-semibold text-gray-900">
+                      {profile.name}
+                    </div>
+                    <div className="text-sm text-gray-500">{profile.title}</div>
+                    <div className="text-xs text-gray-400">
+                      {profile.location}
+                    </div>
                   </div>
                 </div>
+                {/* Tags or view button */}
+                {
+                  // If hovered, show button
+                  isHovered ? (
+                    <button className="flex items-center gap-1 border border-emphasis text-emphasis rounded-full px-4 py-1 text-sm font-semibold mt-2 bg-white shadow hover:bg-emphasis hover:text-white transition">
+                      <IoLogInOutline />
+                      View
+                    </button>
+                  ) : (
+                    // Else, show tags
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {profile.tags.map((tag, i) => (
+                        <span
+                          key={i}
+                          className="bg-gray-100 text-gray-600 text-xs rounded-full px-3 py-1 border border-gray-200"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )
+                }
               </div>
-              {/* Status or View Button */}
-              {profile.status ? (
-                <span
-                  className={`inline-block text-xs font-semibold rounded-full px-3 py-1 ${
-                    profile.status.includes("Open")
-                      ? `bg-emphasis text-white`
-                      : `bg-blue-100 text-blue-700`
-                  }`}
-                >
-                  {profile.status}
-                </span>
-              ) : profile.emphasis ? (
-                <button className="flex items-center gap-1 border border-emphasis text-emphasis rounded-full px-4 py-1 text-sm font-semibold mt-2">
-                  <IoLogInOutline />
-                  View
-                </button>
-              ) : null}
-              {/* Tags */}
-              <div className="flex flex-wrap gap-2 mt-2">
-                {profile.tags.map((tag, i) => (
-                  <span
-                    key={i}
-                    className="bg-gray-100 text-gray-600 text-xs rounded-full px-3 py-1 border border-gray-200"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         {/* Pagination */}
         <div className="flex justify-center mt-8 gap-2">
