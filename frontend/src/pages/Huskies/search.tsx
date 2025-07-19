@@ -188,7 +188,7 @@ export default function SearchPage() {
         </button>
         {/* Search bar and map mode */}
         <div className="flex flex-col md:flex-row md:items-center gap-4 mb-8">
-          <div className="flex-1 flex items-center bg-gray-100 rounded-full px-4 py-2 border border-gray-200">
+          <div className="flex-1 flex items-center bg-white rounded-full px-4 py-2 border border-gray-300">
             <IoSearchOutline className="mr-2" />
             {/* TODO: Should do a search upon hitting enter */}
             <input
@@ -214,46 +214,50 @@ export default function SearchPage() {
             return (
               <div
                 key={idx + (currentPage - 1) * profilesPerPage}
-                className="border rounded-sm bg-white p-5 flex flex-col gap-3 relative border-gray-300 hover:border-black"
+                className="border rounded-sm bg-white flex flex-col min-h-[120px] relative border-gray-300 group hover:border-black"
                 onMouseEnter={() =>
                   setHoveredIdx(idx + (currentPage - 1) * profilesPerPage)
                 }
                 onMouseLeave={() => setHoveredIdx(null)}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex flex-3 items-center gap-3 m-5">
                   <img
                     src={profile.image}
                     alt={profile.name}
                     className="w-14 h-14 rounded-full object-cover border border-black"
                   />
                   <div>
-                    <div className="font-semibold text-gray-900">
+                    <div className="font-semibold text-gray-800">
                       {profile.name}
                     </div>
-                    <div className="text-sm text-gray-500">{profile.title}</div>
-                    <div className="text-xs text-gray-400">
+                    <div className="text-sm text-black">{profile.title}</div>
+                    <div className="text-xs text-gray-600">
                       {profile.location}
                     </div>
                   </div>
                 </div>
+                <div className="border-b border-gray-300 group-hover:border-black" />
                 {/* Tags or view button */}
-                {isHovered ? (
-                  <button className="flex items-center gap-1 border border-emphasis text-emphasis rounded-full px-4 py-1 text-sm font-semibold mt-2 bg-white shadow hover:bg-emphasis hover:text-white transition">
-                    <IoLogInOutline />
-                    View
-                  </button>
-                ) : (
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {profile.tags.map((tag, i) => (
-                      <span
-                        key={i}
-                        className="bg-gray-100 text-gray-600 text-xs rounded-full px-3 py-1 border border-gray-200"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
+                <div className="flex flex-1 items-center justify-center min-h-[48px] my-2">
+                  {isHovered ? (
+                    // TODO: The view button should take the user to the alumni's profile page
+                    <button className="flex mx-5 items-center w-full justify-center gap-1 border border-emphasis text-emphasis rounded-full py-1 text-sm font-semibold bg-white hover:bg-emphasis hover:text-white transition">
+                      <IoLogInOutline />
+                      View
+                    </button>
+                  ) : (
+                    <div className="w-full items-center justify-center grid grid-cols-3 divide-x divide-solid divide-gray-300">
+                      {profile.tags.map((tag, i) => (
+                        <span
+                          key={i}
+                          className=" text-black h-full text-xs flex items-center justify-center text-center"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })}
