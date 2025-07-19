@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   IoNotificationsOutline,
   IoMailOutline,
@@ -103,9 +103,45 @@ const mockProfiles = [
   },
 ];
 
+// Calculate profiles per page
+function useProfilesPerPage() {
+  const [profilesPerPage, setProfilesPerPage] = useState(12);
+
+  // Adjust profiles per page depending on screen size
+  useEffect(() => {
+    function updateProfilesPerPage() {
+      if (window.innerWidth < 640) {
+        setProfilesPerPage(4);
+      } else if (window.innerWidth < 1024) {
+        setProfilesPerPage(8);
+      } else {
+        setProfilesPerPage(12);
+      }
+    }
+    updateProfilesPerPage();
+    window.addEventListener("resize", updateProfilesPerPage);
+    return () => window.removeEventListener("resize", updateProfilesPerPage);
+  }, []);
+  return profilesPerPage;
+}
+
 // TODO: Use responsive design
 export default function SearchPage() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const profilesPerPage = useProfilesPerPage();
+  const totalPages = Math.ceil(mockProfiles.length / profilesPerPage);
+
+  // Reset to page 1 if profilesPerPage changes and currentPage is out of range
+  useEffect(() => {
+    if (currentPage > totalPages) setCurrentPage(1);
+  }, [currentPage, profilesPerPage, totalPages]);
+
+  // Get the set of profiles that'll be displayed for the current page
+  const paginatedProfiles = mockProfiles.slice(
+    (currentPage - 1) * profilesPerPage,
+    currentPage * profilesPerPage
+  );
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -172,14 +208,16 @@ export default function SearchPage() {
         </div>
         {/* Profile grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {mockProfiles.map((profile, idx) => {
-            const isHovered = hoveredIdx === idx;
-
+          {paginatedProfiles.map((profile, idx) => {
+            const isHovered =
+              hoveredIdx === idx + (currentPage - 1) * profilesPerPage;
             return (
               <div
-                key={idx}
+                key={idx + (currentPage - 1) * profilesPerPage}
                 className="border rounded-sm bg-white p-5 flex flex-col gap-3 relative border-gray-300 hover:border-black"
-                onMouseEnter={() => setHoveredIdx(idx)}
+                onMouseEnter={() =>
+                  setHoveredIdx(idx + (currentPage - 1) * profilesPerPage)
+                }
                 onMouseLeave={() => setHoveredIdx(null)}
               >
                 <div className="flex items-center gap-3">
@@ -199,42 +237,39 @@ export default function SearchPage() {
                   </div>
                 </div>
                 {/* Tags or view button */}
-                {
-                  // If hovered, show button
-                  isHovered ? (
-                    <button className="flex items-center gap-1 border border-emphasis text-emphasis rounded-full px-4 py-1 text-sm font-semibold mt-2 bg-white shadow hover:bg-emphasis hover:text-white transition">
-                      <IoLogInOutline />
-                      View
-                    </button>
-                  ) : (
-                    // Else, show tags
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {profile.tags.map((tag, i) => (
-                        <span
-                          key={i}
-                          className="bg-gray-100 text-gray-600 text-xs rounded-full px-3 py-1 border border-gray-200"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )
-                }
+                {isHovered ? (
+                  <button className="flex items-center gap-1 border border-emphasis text-emphasis rounded-full px-4 py-1 text-sm font-semibold mt-2 bg-white shadow hover:bg-emphasis hover:text-white transition">
+                    <IoLogInOutline />
+                    View
+                  </button>
+                ) : (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {profile.tags.map((tag, i) => (
+                      <span
+                        key={i}
+                        className="bg-gray-100 text-gray-600 text-xs rounded-full px-3 py-1 border border-gray-200"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             );
           })}
         </div>
         {/* Pagination */}
         <div className="flex justify-center mt-8 gap-2">
-          {[1, 2, 3, 4, 5, 6].map((n) => (
-            <span
-              key={n}
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => setCurrentPage(i + 1)}
               className={`w-6 h-6 flex items-center justify-center rounded text-sm font-semibold cursor-pointer ${
-                n === 1 ? "text-emphasis" : "text-gray-400"
+                currentPage === i + 1 ? "text-emphasis" : "text-gray-400"
               }`}
             >
-              {n}
-            </span>
+              {i + 1}
+            </button>
           ))}
         </div>
       </div>
