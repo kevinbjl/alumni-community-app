@@ -1,11 +1,15 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import SearchPage from "./pages/Huskies/search";
+import HuskiesSearchPage from "@/pages/Huskies/search";
+import RecruitingSearchPage from "@/pages/Recruiting/search";
+import ActivitiesSearchPage from "@/pages/Activities/search";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/huskies/search" element={<SearchPage />} />
+        <Route path="/huskies/search" element={<HuskiesSearchPage />} />
+        <Route path="/recruiting/search" element={<RecruitingSearchPage />} />
+        <Route path="/activities/search" element={<ActivitiesSearchPage />} />
         <Route
           path="*"
           element={

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   IoNotificationsOutline,
   IoMailOutline,
@@ -125,12 +126,12 @@ function useProfilesPerPage() {
   return profilesPerPage;
 }
 
-// TODO: Use responsive design
-export default function SearchPage() {
+export default function HuskiesSearchPage() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const profilesPerPage = useProfilesPerPage();
   const totalPages = Math.ceil(mockProfiles.length / profilesPerPage);
+  const navigate = useNavigate();
 
   // Reset to page 1 if profilesPerPage changes and currentPage is out of range
   useEffect(() => {
@@ -164,27 +165,32 @@ export default function SearchPage() {
         </div>
       </nav>
       {/* Tab bar */}
-      <div className="w-full flex justify-center border-b border-gray-200 bg-white">
+      <nav className="w-full flex justify-center border-b bg-white border-gray-200">
         <div className="flex gap-12 mt-2 mb-2">
-          {/* TODO: Set up navigation for those tabs */}
           {tabs.map((tab) => (
-            <span
+            <button
               key={tab.name}
-              className={`text-lg font-lightmedium cursor-pointer ${
+              className={`text-lg font-lightmedium cursor-pointer focus:outline-none ${
                 tab.active ? "text-emphasis" : "text-gray-500"
               }`}
+              onClick={() => {
+                if (tab.name === "Recruiting") navigate("/recruiting/search");
+                if (tab.name === "Huskies") navigate("/huskies/search");
+                if (tab.name === "Activities") navigate("/activities/search");
+              }}
+              type="button"
             >
               {tab.name}
-            </span>
+            </button>
           ))}
         </div>
-      </div>
+      </nav>
       {/* Main content */}
       <div className="max-w-7xl w-full mx-auto flex-1 px-4 md:px-8 py-8">
         {/* TODO: The back button should return to the previous page */}
         <button className="flex items-center gap-2 text-gray-700 mb-6">
           <IoIosArrowBack />
-          <span className="text-medium">Huskies</span>
+          <span className="text-medium">Previous</span>
         </button>
         {/* Search bar and map mode */}
         <div className="flex flex-col md:flex-row md:items-center gap-4 mb-8">
